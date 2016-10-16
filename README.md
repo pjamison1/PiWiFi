@@ -43,10 +43,6 @@ You should review the two projects after they have been imported paying particul
 To build the application you should build the **PiWiFi** project. The other project will be built automatically as a dependent project.
 
 You should ensure that both projects have the same settings in terms of **Build Configuration**; **"Device-Debug"**, **"Device-Release"**, etc.
-
-**But I don't want to build it myself!**
-
-If you don't want to build this sample application yourself we've included a pre-built and signed BAR file. You can find it in the folder "**installable-bar-files**".
  
 **To contribute code to this repository you must be [signed up as an 
 official contributor](http://blackberry.github.com/howToContribute.html).**
