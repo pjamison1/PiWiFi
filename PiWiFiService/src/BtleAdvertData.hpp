@@ -73,6 +73,7 @@ private:
     uint8_t _beaconReserved;
     QString _wifiMessage;
     bool _hasPiWiFi;
+    QVariant _qv;
 };
 
 #endif /* BTLEADVERTDATA_HPP_ */

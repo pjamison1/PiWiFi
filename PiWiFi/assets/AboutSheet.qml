@@ -33,6 +33,9 @@ Page{
                             close();
                         }
                     }
+                    Label {
+                        text : Application.applicationVersion
+                    }
                                 
                 
                 //Label {

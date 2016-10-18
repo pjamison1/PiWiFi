@@ -1,10 +1,10 @@
 1
 8
-images/about.png
+SettingsSheet.qml
+CustomButton.qml
 images/icon.png
 images/settings.png
-AboutSheet.qml
-CustomButton.qml
+images/about.png
 Logger.qml
 main.qml
-SettingsSheet.qml
+AboutSheet.qml

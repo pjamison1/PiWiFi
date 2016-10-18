@@ -47,6 +47,8 @@ AppSettings::AppSettings(QObject* parent) : QObject(parent)
     mUranuscanner = QSettings().value(STARSHIP_URANUSSCANNER_KEY, mDefaultUranusscanner).toBool();
     mWarpDriveSpeedScanner = QSettings().value(STARSHIP_WARPDRIVESPEEDSCANNER_KEY, mDefaultWarpDriveSpeedScanner).toFloat();
     mMsg = QSettings().value(WIFI_KEY, mDefaultMsg).toString();
+    mUuid = QSettings().value(WIFI_UUID, mDefaultUuid).toString();
+
 }
 
 bool AppSettings::gravity() const
@@ -129,6 +131,7 @@ void AppSettings::setUuid(QString uuid)
     if (mUuid != uuid) {
         QSettings().setValue(WIFI_UUID, uuid);
         mUuid = uuid;
+        QSettings().sync();
         emit uuidChanged(uuid);
     }
 }

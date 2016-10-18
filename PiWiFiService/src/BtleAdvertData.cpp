@@ -35,10 +35,11 @@ BtleAdvertData::BtleAdvertData(QObject *obj)
     , _beaconMfgCompanyCode(0)
     , _beaconId()
     , _beaconReserved(0)
-    , _wifiMessage()
+    , _wifiMessage("")
     , _hasPiWiFi(false)
+    , _qv("")
 {
-
+    qDebug() << "BBBB parse [ PIJ Start ]";
 }
 
 BtleAdvertData::~BtleAdvertData()
@@ -163,15 +164,18 @@ void BtleAdvertData::wifi()  {
     //QCoreApplication::setOrganizationDomain("bottear.co.uk");
 
     QSettings s(m_author,m_appName);
-    QString msg = s.value("msg", "none_btsrc").toString();
-
+    //QString msg = s.value("msg", "none_btsrc").toString();
     //QByteArray pi3 =  s.value("uuid", "3088e24053954894961ecff021bd6055").toByteArray();
-
     // try making a quuid
     //QUuid qu = new QUuid(&pi3);
+    // try to cast it
+    _qv = s.value("uuid", "3088e24053954894961ecff021bd6055") ;
 
-    // try to cast it 23/08/16
-    //QByteArray pi3 =  QByteArray::fromHex(s.value("uuid", "3088e24053954894961ecff021bd6055").toString());
+    QByteArray pi3 =  _qv.toByteArray() ;
+
+    qDebug() << "PIJ  pi3 =  [" << pi3 << "]";
+
+    //QByteArray pi3 =  s.value("uuid", "3088e24053954894961ecff021bd6055") ;
 
     /*
      *
@@ -179,14 +183,12 @@ void BtleAdvertData::wifi()  {
      * */
 
     // THIS LINES WORKS.
-    QByteArray pi3 = QByteArray::fromHex("3088e24053954894961ecff021bd6055");
+    //QByteArray pi3 = QByteArray::fromHex("3088e24053954894961ecff021bd6055");
 
 
     if (_beaconUuid == pi3|| _beaconId == pi3 ) {
          _hasPiWiFi = true;
-        //_wifiMessage = "Wifi Beacon matched...";
-
-        _wifiMessage = msg;
+         _wifiMessage = "Wifi Beacon matched...";
 
         //code example
 
@@ -222,7 +224,8 @@ void BtleAdvertData::wifi()  {
 
     }
     else {
-        _wifiMessage = _beaconUuid;
+
+        _wifiMessage = "Sorry, UUID doesn't match" ;
     }
 
 }
