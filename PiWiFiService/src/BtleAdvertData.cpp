@@ -179,7 +179,8 @@ void BtleAdvertData::wifi()  {
     //QCoreApplication::setApplicationName("PiWiFi");
     //QCoreApplication::setOrganizationDomain("bottear.co.uk");
 
-    QSettings s(m_author,m_appName);
+    //QSettings s(m_author,m_appName);
+    //  CHeck Full Git Update.
     //QString msg = s.value("msg", "none_btsrc").toString();
     //QByteArray pi3 =  s.value("uuid", "3088e24053954894961ecff021bd6055").toByteArray();
     // try making a quuid
