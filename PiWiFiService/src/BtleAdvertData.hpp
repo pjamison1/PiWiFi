@@ -37,6 +37,7 @@ public:
 	QByteArray & beaconUuid();
     QByteArray & beaconId();
 	QString beaconUuidAsString();
+	QString appUuidAsString();
     QString beaconIdAsString();
     //QString wifiMessage();
 	int beaconMajor();
@@ -74,6 +75,10 @@ private:
     QString _wifiMessage;
     bool _hasPiWiFi;
     QVariant _qv;
+    QByteArray pi3;
+    QString uuidSettings;
+    QString uuidBT;
+
 };
 
 #endif /* BTLEADVERTDATA_HPP_ */

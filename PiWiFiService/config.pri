@@ -158,12 +158,14 @@ config_pri_source_group1 {
     SOURCES += \
         $$quote($$BASEDIR/src/BtleAdvertData.cpp) \
         $$quote($$BASEDIR/src/SocketListener.cpp) \
+        $$quote($$BASEDIR/src/appsettings.cpp) \
         $$quote($$BASEDIR/src/main.cpp) \
         $$quote($$BASEDIR/src/service.cpp)
 
     HEADERS += \
         $$quote($$BASEDIR/src/BtleAdvertData.hpp) \
         $$quote($$BASEDIR/src/SocketListener.hpp) \
+        $$quote($$BASEDIR/src/appsettings.h) \
         $$quote($$BASEDIR/src/common.hpp) \
         $$quote($$BASEDIR/src/service.hpp)
 }

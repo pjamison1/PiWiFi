@@ -230,9 +230,11 @@ void Service::parseBeaconData(const char *data, int len, int8_t rssi, const char
 
                 entry["CLASS"] = "IBEACON";
                 entry["UUID"] = advertData.beaconUuidAsString();
+                //entry["UUID"] = advertData.;
                 entry["MAJOR"] = advertData.beaconMajor();
                 entry["MINOR"] = advertData.beaconMinor();
                 entry["ACTION"] = advertData.wifiMessage();
+                entry["APPUUID"] = advertData.appUuidAsString();
 
             } else if(advertData.hasAltBeaconData()) {
                 qDebug() << "BBBB Alt Beacon data present in advert data" << endl;
@@ -479,11 +481,12 @@ void Service::beaconEnteredRange(const QVariantMap &entry)
         _notification->setTitle("PiWiFi Service");
 
         if (isIBeacon) {
-            _notification->setBody(QString("Entered range of iBeacon\nUUID: %1\nMajor: %2\nMinor: %3\nAction: %4")
+            _notification->setBody(QString("Entered range of iBeacon\nUUID: %1\nMajor: %2\nMinor: %3\nAction: %4\nApp Settings UUID: %5")
                     .arg(qvariant_cast<QString>(beacon["UUID"]))
                     .arg(qvariant_cast<int>(beacon["MAJOR"]))
                     .arg(qvariant_cast<int>(beacon["MINOR"]))
-                    .arg(qvariant_cast<QString>(beacon["ACTION"])) );
+                    .arg(qvariant_cast<QString>(beacon["ACTION"]))
+                    .arg(qvariant_cast<QString>(beacon["APPUUID"])) );
 
         } else if (isAltBeacon) {
             if (qvariant_cast<QString>(beacon["COMPANYNAME"]).compare("") == 0) {

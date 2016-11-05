@@ -1,1 +1,1 @@
-include (../PiWiFiService.pro)
+include (../WakeMeByBeaconService.pro)

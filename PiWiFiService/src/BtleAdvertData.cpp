@@ -18,6 +18,7 @@
 #include <wifi/wifi_service.h>
 #include <nfc/nfc.h>
 #include <bb/cascades/Application>
+#include "appsettings.h"
 
 const QString BtleAdvertData::m_author = "PIJ"; // for creating settings
 const QString BtleAdvertData::m_appName = "PiWiFi"; // for creating settings
@@ -26,7 +27,7 @@ const QString BtleAdvertData::m_appName = "PiWiFi"; // for creating settings
 BtleAdvertData::BtleAdvertData(QObject *obj)
 	: QObject(obj)
 	, _advertData()
-	, _beaconUuid()
+	, _beaconUuid("")
 	, _beaconMajor(0)
 	, _beaconMinor(0)
 	, _calibratedStrength(0)
@@ -38,6 +39,9 @@ BtleAdvertData::BtleAdvertData(QObject *obj)
     , _wifiMessage("")
     , _hasPiWiFi(false)
     , _qv("")
+    , pi3("")
+    , uuidSettings("")
+    , uuidBT("")
 {
     qDebug() << "BBBB parse [ PIJ Start ]";
 }
@@ -157,6 +161,18 @@ void BtleAdvertData::wifi()  {
     _hasPiWiFi = false;
 
     //! [0]
+    // copied from working wheresmybeacon app.
+    QCoreApplication::setOrganizationName("PIJ");
+    QCoreApplication::setApplicationName("WHERESMYBEACON");
+
+    //QSettings s(m_author,m_appName);
+    //QSettings s;
+    AppSettings as;
+    _qv = as.uuid(); //  ("uuid", "88e24053954894961ecff021bd605560") ;
+    uuidSettings =  _qv.toByteArray() ;
+    qDebug() << "PIJ  PIJ pi3 ["  << pi3 << "]";
+    // copy ends here
+
 
     // get uuid from Settings
     //QCoreApplication::setOrganizationName("PIJ");
@@ -171,9 +187,9 @@ void BtleAdvertData::wifi()  {
     // try to cast it
     _qv = s.value("uuid", "3088e24053954894961ecff021bd6055") ;
 
-    QByteArray pi3 =  _qv.toByteArray() ;
+    pi3 =  _qv.toByteArray() ;
 
-    qDebug() << "PIJ  pi3 =  [" << pi3 << "]";
+    qDebug() << "PIJ  PIJ pi3 []";
 
     //QByteArray pi3 =  s.value("uuid", "3088e24053954894961ecff021bd6055") ;
 
@@ -183,10 +199,50 @@ void BtleAdvertData::wifi()  {
      * */
 
     // THIS LINES WORKS.
-    //QByteArray pi3 = QByteArray::fromHex("3088e24053954894961ecff021bd6055");
+    //QByteArray piHardCode = QByteArray::fromHex("3088e24053954894961ecff021bd6055");
+
+    //QString uuidBT = QString::fromUtf8(piHardCode,-1);
+    //QString uuidSettings = QString::fromUtf8(pi3,-1);
 
 
-    if (_beaconUuid == pi3|| _beaconId == pi3 ) {
+    // just for help - below
+    //_beacon_uuid = QByteArray(beacon_uuid).toHex();
+
+    //qDebug() << "PIJ PIJ UUIDBT :  [" << uuidBT << "]";
+    //qDebug() << "PIJ PIJ UUIDSETTINGS :  [" << uuidSettings << "]";
+
+    // fire the bluetooth one into string the same way.
+
+    //uuidBT = QString::fromUtf8(_beaconUuid,-1);
+
+    // try to build two comparable strings here.
+    //_beaconUuid.clear();
+
+    /*
+    uuidBT = "";
+    for (int k=0; k<16; k++) {
+        uuidBT.append(_beaconUuid.at(k));
+    }
+    uuidSettings = "";
+    for (int kk=0; kk<16; kk++) {
+        uuidSettings.append(pi3.at(kk));
+    }
+     */
+
+
+
+   // from wheresmybeacon
+    uuidBT = beaconUuidAsString();
+    /*if (pi3 == uuidBT)
+    {
+        mloopcounter = 99;
+    }*/
+
+
+
+    //if (_beaconUuid == pi3|| _beaconId == pi3 || _beaconUuid == piHardCode) {
+    //if (uuidBT.compare(uuidSettings) == 0, Qt::CaseInsensitive) {
+    if (uuidBT ==  uuidSettings )  {
          _hasPiWiFi = true;
          _wifiMessage = "Wifi Beacon matched...";
 
@@ -212,7 +268,7 @@ void BtleAdvertData::wifi()  {
             _wifiMessage =  "WiFi Busy";
         } else {
         // Unknown status
-
+            _wifiMessage =  "WiFi unknown status";
         }
         } else {
         // An error occurred with wifi_get_status()
@@ -224,7 +280,6 @@ void BtleAdvertData::wifi()  {
 
     }
     else {
-
         _wifiMessage = "Sorry, UUID doesn't match" ;
     }
 
@@ -256,13 +311,21 @@ QString BtleAdvertData::beaconUuidAsString()
 	if (_beaconUuid == estimote) {
 		return "Default Estimote UUID";
 	}
-
-
 	for (int i = 0; i < _beaconUuid.length(); i++) {
 	    uuid.append(QString("%1").arg((uint8_t)_beaconUuid.at(i), 0, 16));
 	}
 	return uuid;
 }
+
+// convert setings uuid here
+QString BtleAdvertData::appUuidAsString()
+{
+    /*for (int i = 0; i < _beaconUuid.length(); i++) {
+            uuid.append(QString("%1").arg((uint8_t)_beaconUuid.at(i), 0, 16));
+        }*/
+    return uuidSettings;
+}
+
 
 int BtleAdvertData::beaconMajor()
 {
